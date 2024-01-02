@@ -1,42 +1,14 @@
-import 'dart:io';
+import 'package:flutter_application_2/mock_webview.dart'
+if (dart.library.html) 'package:flutter_application_2/web_webview.dart'
+if (dart.library.io) 'package:flutter_application_2/non_web_webview.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:footer/footer.dart';
 
-class AppPlatform {
-  static const Map<String, CustomPlatform> _platfromMap = {
-    'linux': CustomPlatform.linux,
-    'macos': CustomPlatform.macos,
-    'windows': CustomPlatform.windows,
-    'android': CustomPlatform.android,
-    'ios': CustomPlatform.ios,
-    'fuchsia': CustomPlatform.fuchsia,
-  };
 
-  static CustomPlatform? _getPlatform() {
-    if (kIsWeb) {
-      return CustomPlatform.web;
-    }
-
-    return _platfromMap[Platform.operatingSystem] ?? CustomPlatform.undefined;
-  }
-
-  static CustomPlatform? get platform => _getPlatform();
-}
-
-enum CustomPlatform {
-  linux,
-  macos,
-  windows,
-  ios,
-  android,
-  fuchsia,
-  web,
-  undefined,
-}
+import 'app_platform.dart';
 
 void main() {
   runApp(const MyApp());
@@ -139,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.redAccent),
                             ),
-                            Expanded(flex: 3, child: Text(_bodyText)),
+                            Expanded(flex: 3, child: webView(_controller.text)),
                             Expanded(
                               child: TextField(
                                 controller: _controller,
